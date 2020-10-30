@@ -19,6 +19,8 @@
 /* Default data type is double, default size is 4000. */
 #include "trmm.h"
 
+#include "macros.h"
+#include "timing.h"
 
 /* Array initialization. */
 static
@@ -65,15 +67,17 @@ void kernel_trmm(int ni,
 {
   int i, j, k;
   #pragma scop
-  #pragma omp parallel
+  HOOKOMP_TIMING_OMP_START;
+  #pragma omp parallel num_threads(OPENMP_NUM_THREADS)
   {
     /*  B := alpha*A'*B, A triangular */
-    #pragma omp for private (j, k)
+    #pragma omp for private (j, k) schedule(OPENMP_SCHEDULE_WITH_CHUNK)
     for (i = 1; i < _PB_NI; i++)
       for (j = 0; j < _PB_NI; j++)
 	for (k = 0; k < i; k++)
 	  B[i][j] += alpha * A[i][k] * B[j][k];
   }
+  HOOKOMP_TIMING_OMP_STOP;
   #pragma endscop
 }
 
@@ -108,6 +112,9 @@ int main(int argc, char** argv)
   /* Be clean. */
   POLYBENCH_FREE_ARRAY(A);
   POLYBENCH_FREE_ARRAY(B);
+
+  fprintf(stdout, "version = OMP, num_threads = %d, NI = %d, ", OPENMP_NUM_THREADS, NI);
+  HOOKOMP_PRINT_TIME_RESULTS;
 
   return 0;
 }

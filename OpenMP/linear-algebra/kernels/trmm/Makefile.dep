@@ -1,2 +1,2 @@
-trmm.o: trmm.c ../../../utilities/polybench.h trmm.h
+trmm.o: trmm.c ../../../utilities/polybench.h trmm.h macros.h timing.h
 polybench.o: ../../../utilities/polybench.c
