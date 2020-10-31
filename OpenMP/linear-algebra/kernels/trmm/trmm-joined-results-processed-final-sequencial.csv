@@ -1,4 +1,4 @@
-exp,execution,benchmark,size_of_data,version,num_threads,NI,ORIG,OMP
+exp,execution,benchmark,size_of_data,version,NI,ORIG,OMP
 sequencial,1,trmm,MINI_DATASET,OMP,256,0,8098728
 sequencial,2,trmm,MINI_DATASET,OMP,256,0,8246403
 sequencial,3,trmm,MINI_DATASET,OMP,256,0,8305070
