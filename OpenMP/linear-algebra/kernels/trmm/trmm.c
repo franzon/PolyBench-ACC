@@ -113,7 +113,7 @@ int main(int argc, char** argv)
   POLYBENCH_FREE_ARRAY(A);
   POLYBENCH_FREE_ARRAY(B);
 
-  fprintf(stdout, "version = OMP, num_threads = %d, NI = %d, ", OPENMP_NUM_THREADS, NI);
+  fprintf(stdout, "version = OMP, NI = %d, ", NI);
   HOOKOMP_PRINT_TIME_RESULTS;
 
   return 0;

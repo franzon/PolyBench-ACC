@@ -23,4 +23,4 @@ TARGET_LANG = OPENMP
 CC = gcc
 
 # Compiler flags
-CFLAGS = -O2 -fopenmp
+CFLAGS = -O2
