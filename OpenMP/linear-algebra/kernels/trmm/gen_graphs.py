@@ -36,7 +36,7 @@ def generate_plot(title, sequencial_data, for_data, taskloop_data):
     rects3 = ax.bar(0, sequencial_x, width, label='sequencial', yerr=sequencial_error,  align='center', alpha=0.8, ecolor='black', capsize=4,)
 
     ax.set_title(title)
-    ax.set_xlabel('Numero de threads')
+    ax.set_xlabel('Número de threads')
     ax.set_ylabel('Tempo (s)')
     ax.set_xticks(np.append([0], x))
     ax.set_xticklabels(['Sequencial'] + labels)
