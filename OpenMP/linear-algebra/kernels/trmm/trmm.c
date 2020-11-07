@@ -70,11 +70,14 @@ void kernel_trmm(int ni,
   HOOKOMP_TIMING_OMP_START;
 
     /*  B := alpha*A'*B, A triangular */
-    #pragma omp taskloop private (j, k) num_tasks(OPENMP_NUM_THREADS) grainsize(128)
+    #pragma omp parallel master
+    {
+    #pragma omp taskloop private (j, k) num_tasks(OPENMP_NUM_THREADS)
     for (i = 1; i < _PB_NI; i++)
       for (j = 0; j < _PB_NI; j++)
 	for (k = 0; k < i; k++)
 	  B[i][j] += alpha * A[i][k] * B[j][k];
+    }
   
   HOOKOMP_TIMING_OMP_STOP;
   #pragma endscop

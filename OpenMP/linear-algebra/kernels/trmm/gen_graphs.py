@@ -1,7 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import shutil
+import os
 
+def prepare_folders():
+    shutil.rmtree('graficos')
+
+    os.mkdir('graficos')
+    os.mkdir('graficos/thread')
+    os.mkdir('graficos/schedule')
+    os.mkdir('graficos/chunk')
 
 """ Gráficos """
 """ 
@@ -35,7 +44,7 @@ def generate_plot(title, sequencial_data, for_data, taskloop_data):
 
     fig.tight_layout()
 
-    plt.savefig('graficos/{}'.format(title))
+    plt.savefig('graficos/thread/{}'.format(title))
     plt.close()
 
 
@@ -69,12 +78,20 @@ def dataset_thread_tempo():
 
             concat = pd.concat([sequencial, taskloop, schedule_chunk], ignore_index=True)
 
-            print(dataset_name, concat['mean'].min(), schedule_chunk_name )
             if concat['mean'].min() < global_min_time:
                 global_min_time = concat['mean'].min()
                 global_min_schedule_chunk = schedule_chunk
                 global_min_schedule_chunk_name = schedule_chunk_name
 
+        time_sequencial = sequencial.iloc[0]['mean']
+        times_for = [row['mean'] for i, row in global_min_schedule_chunk.iterrows()]
+        times_taskloop = [row['mean'] for i, row in taskloop.iterrows()]
+
+        print('Speedup results [{}]'.format(dataset_name))
+        print('For: {}'.format([round(time_sequencial / x, 2)  for x in times_for]))
+        print('Taskloop: {}'.format([round(time_sequencial / x, 2) for x in times_taskloop]))
+        print('\n')
+        # print('For: {}'.format([x / sequencial['mean'] for x in global_min_schedule_chunk['mean']]))
 
         title = '{}-{}-{}'.format(dataset_name,  *global_min_schedule_chunk_name)            
         generate_plot(title, (sequencial['mean'], sequencial['std']), (global_min_schedule_chunk['mean'], global_min_schedule_chunk['std']), (taskloop['mean'], taskloop['std'])) 
@@ -93,8 +110,9 @@ def dataset_thread_tempo():
 
    
 
-dataset_thread_tempo()
 # generate_plot('teste', ([50], [20]), ([20, 34, 30, 35, 27], [1,2,3,4,5]),([25, 32, 34, 20, 25], [10,9,8,7,6]) )
 
 # 
 
+prepare_folders()
+dataset_thread_tempo()
