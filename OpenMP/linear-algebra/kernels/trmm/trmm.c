@@ -66,16 +66,18 @@ void kernel_trmm(int ni,
 		 DATA_TYPE POLYBENCH_2D(B,NI,NI,ni,ni))
 {
   int i, j, k;
-
+  #pragma scop
   HOOKOMP_TIMING_OMP_START;
 
     /*  B := alpha*A'*B, A triangular */
+    #pragma omp taskloop private (j, k) num_tasks(OPENMP_NUM_THREADS) grainsize(128)
     for (i = 1; i < _PB_NI; i++)
       for (j = 0; j < _PB_NI; j++)
-	      for (k = 0; k < i; k++)
-	        B[i][j] += alpha * A[i][k] * B[j][k];
+	for (k = 0; k < i; k++)
+	  B[i][j] += alpha * A[i][k] * B[j][k];
   
   HOOKOMP_TIMING_OMP_STOP;
+  #pragma endscop
 }
 
 
@@ -110,7 +112,7 @@ int main(int argc, char** argv)
   POLYBENCH_FREE_ARRAY(A);
   POLYBENCH_FREE_ARRAY(B);
 
-  fprintf(stdout, "version = OMP, NI = %d, ", NI);
+  fprintf(stdout, "version = OMP, num_threads = %d, NI = %d, ", OPENMP_NUM_THREADS, NI);
   HOOKOMP_PRINT_TIME_RESULTS;
 
   return 0;

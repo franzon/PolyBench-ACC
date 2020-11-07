@@ -8,13 +8,13 @@ import sys, getopt
 #version = OMP, num_threads = 1, NI = 2000, NJ = 2000, NK = 2000, ORIG = 0, OMP = 74536668053, 
 #74.536703
 
-header = 'exp,execution,benchmark,size_of_data,version,NI,ORIG,OMP'
+header = 'exp,execution,benchmark,size_of_data,num_threads,version,num_threads,NI,ORIG,OMP'
 
 def parse(data):
 
    print ('parsing...')
 
-   result = re.findall('exp = (.*?), execution = (.*?), benchmark = (.*?), size_of_data = (.*?),\n.*?\n*version = (.*?), NI = (.*?), ORIG = (.*?), OMP = (.*?), \n', data, re.DOTALL)
+   result = re.findall('exp = (.*?), execution = (.*?), benchmark = (.*?), size_of_data = (.*?), num_threads = (.*?),\n.*?\n*version = (.*?), num_threads = (.*?), NI = (.*?), ORIG = (.*?), OMP = (.*?), \n', data, re.DOTALL)
 
    print (result)
 
