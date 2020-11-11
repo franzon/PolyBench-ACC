@@ -12,13 +12,7 @@ def prepare_folders():
     os.mkdir('graficos/schedule')
     os.mkdir('graficos/chunk')
 
-""" Gráficos """
-""" 
 
-    - Todas as combinações de schedule x chunk_size (grid) (para cada dataset)
-    - Gráfico para cada combinação de dataset (fixar schedule e chunk)
-
- """
 def generate_plot(title, sequencial_data, for_data, taskloop_data):
     sequencial_x, sequencial_error = sequencial_data
     for_x, for_error = for_data
@@ -91,28 +85,9 @@ def dataset_thread_tempo():
         print('For: {}'.format([round(time_sequencial / x, 2)  for x in times_for]))
         print('Taskloop: {}'.format([round(time_sequencial / x, 2) for x in times_taskloop]))
         print('\n')
-        # print('For: {}'.format([x / sequencial['mean'] for x in global_min_schedule_chunk['mean']]))
 
         title = '{}-{}-{}'.format(dataset_name,  *global_min_schedule_chunk_name)            
         generate_plot(title, (sequencial['mean'], sequencial['std']), (global_min_schedule_chunk['mean'], global_min_schedule_chunk['std']), (taskloop['mean'], taskloop['std'])) 
-
-            # plt.title(title)
-            # plt.xlabel('Numero de threads')
-            # plt.ylabel('Tempo (segundos)')
-
-            # x = ['Sequencial', '1', '2', '4', '8', '16']
-            # y = schedule_chunk['mean']
-            # e = schedule_chunk['std']
-
-            # plt.bar(x, y, yerr=e, align='center', alpha=0.5, ecolor='black', capsize=10, width=.5)
-            # plt.savefig('graficos/{}'.format(title))
-            # plt.close()
-
-   
-
-# generate_plot('teste', ([50], [20]), ([20, 34, 30, 35, 27], [1,2,3,4,5]),([25, 32, 34, 20, 25], [10,9,8,7,6]) )
-
-# 
 
 prepare_folders()
 dataset_thread_tempo()
